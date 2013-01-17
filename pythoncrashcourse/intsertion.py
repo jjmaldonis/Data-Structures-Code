@@ -8,6 +8,7 @@ def insertion(l):
                 tmp = l[i]
                 l[i] = l[j]
                 l[j] = tmp
+                #l[j], l[i] = l[i], l[j] #this is the same thing in one line
     return l
 
 def main():
