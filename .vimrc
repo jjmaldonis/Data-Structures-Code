@@ -10,7 +10,7 @@ set autoindent
 filetype plugin indent on
 if has("autocmd")
   augroup filetypedetect
-    au FIleType python    set1 et
+    au FileType python    setl et
   augroup END
 endif
 
