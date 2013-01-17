@@ -30,7 +30,8 @@ print fib(int(arglist[1]))
 #   y = x[:]
 #   now you can modify x without changing y (whereas if you said y = x then changing x would chage y)
 #
-#   now try some stuff by setting x = 'donaldcurtis'
+#   now try some stuff by setting:
+#   x = 'donaldcurtis'
 #   x[1:-1]
 #   x[3:]
 #   x[:-1]
