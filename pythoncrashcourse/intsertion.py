@@ -1,5 +1,7 @@
 #insertion -- impletments insertion sort
 
+import random
+
 def insertion(l):
     print ("in insertion function")
     for i in range(1,len(l)):
@@ -12,7 +14,9 @@ def insertion(l):
     return l
 
 def main():
-    l = [6,7,24,1,18,23,4]
+    l = range(100)
+    random.shuffle(l)
+    #l = [6,7,24,1,18,23,4]
     #l = [9,7,4,2]
     print( "Before Sort: {0}".format(l) )
 
