@@ -1,3 +1,4 @@
+# note that in the algorithm we move from left to right, so j represents the spot to the right of where we will split the list and insert the pivot. that help to concepualize this and better understand what's going on.
 import random
 
 def quick(list):
