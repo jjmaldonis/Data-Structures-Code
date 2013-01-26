@@ -2,20 +2,16 @@
 import random
 
 def merge_sort(l):
-    print ("In merge_sort")
     if len(l) <=1:
         return l
     left = l[0:len(l)/2]
     right = l[len(l)/2:]
 
     left = merge_sort(left)
-    print (left)
     right = merge_sort(right)
-    print (right)
     return merge(left,right)
 
 def merge(left,right):
-    print ("In merge")
     final = []
     while len(left) > 0 or len(right) > 0:
         if len(left) > 0 and len(right) > 0:
@@ -38,6 +34,7 @@ def main():
     l = range(10)
     random.shuffle(l)
     print ( "Before Sort: {0}".format(l) )
+    print( "running merge_sort" )
     l = merge_sort(l)
     print( "After Sort: {0}".format(l) )
 

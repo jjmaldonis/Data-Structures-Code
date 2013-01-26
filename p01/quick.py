@@ -20,6 +20,7 @@ def main():
     list = range(100)
     random.shuffle(list)
     print ("Shuffled list: {0}".format(list) )
+    print( "running quick sort" )
     list = quick(list)
     print ("Sorted list: {0}".format(list) )
 

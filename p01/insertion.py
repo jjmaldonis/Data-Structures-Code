@@ -14,7 +14,6 @@ def insertion(l):
     pass it a list, list will be modified in plase
     """
 
-    print ("in insertion function")
     for i in range(1,len(l)):
         for j in range(0,i):
             if l[i] < l[j]:
