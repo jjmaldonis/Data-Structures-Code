@@ -79,7 +79,7 @@ def main():
             i = i + 1
             j = j + 1
         search(word,dic)
-    for k in range (0,ncol):
+    for k in range (0,ncol-1):
         word = ''
         j = ncol - k - 1
         i = 0
@@ -88,8 +88,10 @@ def main():
             word = word + matrix[j][i]
             i = i + 1
             j = j - 1
-        search(word,dic)
-    for k in range(0,nrows):
+        #print(word)
+        if word != '':
+            search(word,dic)
+    for k in range(0,nrows-3):
         word = ''
         j = nrows -k - 1
         i = 0
@@ -98,7 +100,9 @@ def main():
             word = word + matrix[j][i]
             i = i + 1
             j = j -1
-        search(word,dic)
+        #print(word)
+        if(word != ''):
+            search(word,dic)
 
 
 
