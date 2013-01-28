@@ -44,65 +44,48 @@ def main():
     infile.close()
 
     #search the matrix for words in the dictionary
-    print("Dictionary loaded. Searching for words...")
-    for c in range(0,ncol): #this loop searches for horizontal words DONE
-        for i in range(0,nrows-1):
-            for j in range(i+2,nrows+1):
-                #print("{},{}".format(i,j))
-                search(matrix[c][i:j],dic)
-    for r in range(0,nrows): #this loop searches for vertical words DONE
-        word = ''
-        for c in range(0,ncol): #this loop creates the word
-            word = word + matrix[c][r] 
-        for i in range(0,ncol-1): #ncol = len(word) so i use that instead
-            for j in range(i+2,ncol+1):
-                #print("{},{}".format(i,j))
-                search(word[i:j],dic)
+    for c in range(0,ncol):
+        for r in range(0,nrows):
+            print('Reset')
+            h_c = c
+            h_r = r
+            v_c = c
+            v_r = r
+            dlr_c = c
+            dlr_r = r
+            drl_c = c
+            drl_r = r
+            h_word = matrix[c][r]
+            v_word = matrix[c][r]
+            dlr_word = matrix[c][r]
+            drl_word = matrix[c][r]
+            for x in range(c, ncol):
+                for y in range(r,nrows):
+                    if (h_c + 0 < ncol and h_r +1 < nrows):
+                        h_c = h_c + 0
+                        h_r = h_r + 1
+                        h_word = h_word + matrix[h_c][h_r]
+                        #print(h_word)
+                        search(h_word,dic)
+                    if (v_c + 1 < ncol and v_r +0 < nrows):
+                        v_c = v_c + 1
+                        v_r = v_r + 0
+                        v_word = v_word + matrix[v_c][v_r]
+                        #print(v_word)
+                        search(v_word,dic)
+                    if (dlr_c + 1 < ncol and dlr_r +1 < nrows):
+                        dlr_c = dlr_c + 1
+                        dlr_r = dlr_r + 1
+                        dlr_word = dlr_word + matrix[dlr_c][dlr_r]
+                        #print(dlr_word)
+                        search(dlr_word,dic)
+                    if (drl_c + 1 > ncol and drl_r -1 > nrows):
+                        drl_c = drl_c  + 1
+                        drl_r = drl_r  - 1
+                        drl_word = drl_word + matrix[drl_c][drl_r]
+                        print(drl_word)
+                        search(drl_word,dic)
 
-    for k in range(0,ncol): #these next 4 for loops are for the diagonal cases
-        word = ''
-        j = k
-        i = 0
-        while (j < ncol and i < nrows):
-            #print("{},{}".format(i,j))
-            word = word + matrix[i][j]
-            i = i + 1
-            j = j + 1
-        search(word,dic)
-    for k in range(0,nrows):
-        word = ''
-        j = k
-        i = 0
-        while (j < nrows and i < ncol):
-            #print("{},{}".format(i,j))
-            word = word + matrix[j][i]
-            i = i + 1
-            j = j + 1
-        search(word,dic)
-    for k in range (0,ncol-1):
-        word = ''
-        j = ncol - k - 1
-        i = 0
-        while (j > 0 and i < nrows-1):
-            #print("{},{}".format(i,j))
-            word = word + matrix[j][i]
-            i = i + 1
-            j = j - 1
-        #print(word)
-        if word != '':
-            search(word,dic)
-    for k in range(0,nrows-3):
-        word = ''
-        j = nrows -k - 1
-        i = 0
-        while (j < nrows-1 and i < ncol):
-            #print("{},{}".format(i,j))
-            word = word + matrix[j][i]
-            i = i + 1
-            j = j -1
-        #print(word)
-        if(word != ''):
-            search(word,dic)
 
 
 
