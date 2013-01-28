@@ -59,6 +59,43 @@ def main():
                 print("{},{}".format(i,j))
                 search(word[i:j],dic)
 
+    for k in range(0,ncol): #these next 4 for loops are for the diagonal cases
+        word = ''
+        j = k
+        i = 0
+        while (j < ncol and i < nrows):
+            word = word + matrix[i][j]
+            i = i + 1
+            j = j + 1
+        search(word)
+    for k in range(0,nrows):
+        word = ''
+        j = k
+        i = 0
+        while (j < nrows and i < ncol):
+            word = word + matrix[j][i]
+            i = i + 1
+            j = j + 1
+        search(word)
+    for k in range (0,ncol):
+        word = ''
+        j = ncol - k - 1
+        i = 0
+        while (j > 0 and i < nrows-1):
+            word = word + matrix[j][i]
+            i = i + 1
+            j = j - 1
+        search(word)
+    for k in range(0,nrows):
+        word = ''
+        j = nrows -k - 1
+        i = 0
+        while (j < nrows-1 and i < ncol):
+            word = word + matrix[j][i]
+            i = i + 1
+            j = j -1
+        search(word)
+
 
 
 
