@@ -26,7 +26,7 @@ class Hashtable:
 
 
     def rehash(self):
-        print("Rehash table to size {}!".format(2**(self.size+1)))
+        #print("Rehash table to size {}!".format(2**(self.size+1)))
         self.entries = 0.0
         self.pos = 0
         self.size = self.size + 1
@@ -37,7 +37,7 @@ class Hashtable:
                 self.insert(temphtable[i])
             
         self.lf = (self.entries) / (2**self.size)
-        print("Rehashing complete.")
+        #print("Rehashing complete.")
         return None
 
     def insert(self,element):
