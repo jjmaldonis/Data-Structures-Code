@@ -24,7 +24,9 @@ def main():
     if (line == ''): #if the input word matrix was blank
         return None
     while line != '':
+        line = line.replace(" ","")
         matrix.append(line[:-1]) #dont include the eol char
+        print(line)
         line = infile.readline()
     nrows = len(matrix[0])
     ncol = len(matrix)
