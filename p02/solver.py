@@ -17,13 +17,8 @@ def search(word,dic): #searches dic for word and for word.reverse(). returns 0 i
 
 
 def main():
-    args = str(sys.argv)
-    optlist, args = getopt.getopt(args,':')
-    args = args.replace("[","").replace("]","").replace("'","").replace(" ","")
-    arglist = args.split(',')
-
     #read in file argument (which is the word matrix) and print the matrix as well
-    infile = open(arglist[1],'r')
+    infile = open(sys.argv[1],'r')
     matrix = []
     line = infile.readline()
     if (line == ''): #if the input word matrix was blank
@@ -40,8 +35,10 @@ def main():
     #load the dictionary into the hash table
     #print("Loading the dictionary...")
     dic = hashtable.Hashtable() #create hash table
-    infile = open('/usr/share/dict/american-english-insane','r')
-    #infile = open('my_dict','r')
+    if len(sys.argv) > 2:
+        infile = open(sys.argv[2],'r')
+    else:
+        infile = open('/usr/share/dict/american-english-insane','r')
     line = infile.readline()
     while line != '':
         dic.insert(line[:-1])
