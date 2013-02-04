@@ -6,7 +6,7 @@ class Hashtable:
     def __init__(self):
         self.pos = 0
         self.size = 3 #this is the power of 2, not the actual size of the table
-        self.htable = [''] * (2**self.size)
+        self.htable = [None] * (2**self.size)
         self.entries = 0.0
         self.lf = 0.0 #load factor
         return None
@@ -32,9 +32,9 @@ class Hashtable:
         self.pos = 0
         self.size = self.size + 1
         temphtable = self.htable[:] #copy old table
-        self.htable = [''] * (2**self.size) #replace old table with new, bigger hash table
+        self.htable = [None] * (2**self.size) #replace old table with new, bigger hash table
         for i in range(0,2**(self.size-1)):
-            if(temphtable[i] != ''):
+            if(temphtable[i] != None):
                 self.insert(temphtable[i])
             
         self.lf = (self.entries) / (2**self.size)
@@ -54,7 +54,7 @@ class Hashtable:
     def insert(self,element):
         self.reset_pos(element)
         perturb = self.pos_str_elem(element)
-        while(self.htable[self.pos] != ''): #navigate until we get to an open spot
+        while(self.htable[self.pos] != None): #navigate until we get to an open spot
             perturb = self.increment_pos(perturb)
         self.htable[self.pos] = element #;print("{0} was cast to {1}".format(element,self.pos))
         self.entries = self.entries + 1
@@ -66,7 +66,7 @@ class Hashtable:
     def find(self,element):
         self.reset_pos(element)
         perturb = self.pos_str_elem(element)
-        while(self.htable[self.pos] != ''):
+        while(self.htable[self.pos] != None):
             if element == self.htable[self.pos]: #found it! return where it's at!
                 return self.pos
             else: #didn't find it, check in the next spot we would have put it
