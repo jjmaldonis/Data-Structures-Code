@@ -1,16 +1,3 @@
-Project description - what is the purpose of this code?
-Code description - what does your code do?
-Execution instructions - how does someone use what you have submitted?
-Reflection on project process - responses to the following questions should as a guide,
-What is the most interesting thing you learned from the project? Why is it so interesting?
-What don't you understand even after completing the project? Why doesn't it makes sense to you?
-What was one of the biggest problems you faced in the project? How did you end up resolving the issue?
-What would you tell someone going into this project new that you wish you knew beforehand, but wouldn't make the project trivial?
-
-
-
-
-
 #Project Description
 This project solves a word search for you! It searches through the /usr/share/dict/american-english-insane dictionary for comparisons.
 
