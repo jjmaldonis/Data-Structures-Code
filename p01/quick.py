@@ -16,11 +16,8 @@ def quick(list):
     list[i], list[pivot] = list[pivot], list[i] 
     #now the pivot is in the correct spot with everything to its left lower than it and everything to its right higher than it
 
-    #sort the left and sides of the pivot
-    list_left = quick(list[:i])
-    list_right = quick(list[i+1:])
     #return the sorted left side + pivot + sorted right side
-    return list_left + [list[i]] + list_right
+    return quick(list[:i]) + [list[i]] + quick(list[i+1:])
 
 def main():
     list = range(100)
