@@ -43,11 +43,11 @@ class BinarySearchTree:
             if( child ):
                 node['lchild'] = child;
                 if( node['lchild'] and node['rchild'] ):
-                    node['lheight'] = max( max(node['lchild']['lheight'], node['lchild']['rheight']), max(node['rchild']['lheight'], node['rchild']['rheight'] ) ) + 1;
+                    node['lheight'] = max( max(node['lchild']['lheight'], node['lchild']['rheight'] ) + 1, max(node['rchild']['lheight'], node['rchild']['rheight'] ) );
                 elif( node['lchild'] ):
-                    node['lheight'] = max( node['lchild']['lheight'], node['lchild']['rheight'] )
+                    node['lheight'] = max( node['lchild']['lheight'], node['lchild']['rheight']) + 1
                 elif( node['rchild'] ):
-                    node['lheight'] = max( node['rchild']['lheight'], node['rchild']['rheight'] )
+                    node['lheight'] = max( node['rchild']['lheight'], node['rchild']['rheight'])
                 else:
                     node['lheight'] += 1
                 if( node['lheight'] - node['rheight'] >= 2 ):
@@ -61,11 +61,11 @@ class BinarySearchTree:
             if ( child ):
                 node['rchild'] = child;
                 if( node['lchild'] and node['rchild'] ):
-                    node['rheight'] = max( max(node['lchild']['lheight'], node['lchild']['rheight']), max(node['rchild']['lheight'], node['rchild']['rheight'] ) ) + 1;
+                    node['rheight'] = max( max(node['lchild']['lheight'], node['lchild']['rheight']), max(node['rchild']['lheight'], node['rchild']['rheight'] ) + 1 );
                 elif( node['lchild'] ):
                     node['rheight'] = max( node['lchild']['lheight'], node['lchild']['rheight'] )
                 elif( node['rchild'] ):
-                    node['rheight'] = max( node['rchild']['lheight'], node['rchild']['rheight'] )
+                    node['rheight'] = max( node['rchild']['lheight'], node['rchild']['rheight'] ) + 1
                 else:
                     node['rheight'] += 1
                 if( node['rheight'] - node['lheight'] >= 2 ):
@@ -119,12 +119,12 @@ def main():
     tree = BinarySearchTree()
 
     while(line != ''):
-        #print
-        #print( "\"{0}\" was put into the tree == {1}".format(line[:-1], tree.add(line[:-1])))
-        tree.add(line[:-1])
+        print
+        print( "\"{0}\" was put into the tree == {1}".format(line[:-1], tree.add(line[:-1])))
+        #tree.add(line[:-1])
+        tree.__unicode__()
         line = infile.readline() #get rid of the elo character
 
-    tree.__unicode__()
     return 0;
 
 if __name__ == "__main__":
