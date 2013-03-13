@@ -23,7 +23,7 @@ class BinarySearchTree:
             return False;
 
     def balance(self,node):
-        #print("Balancing {0}".format(node['object']))
+        print("Balancing {0}".format(node['object']))
         pass
 
     def add(self, value, node=None, parent=None):
