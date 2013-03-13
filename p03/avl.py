@@ -31,7 +31,6 @@ class AVLTree(BinarySearchTree):
             subtree['rheight'] = 0;
             subtree['lheight'] = max( subtree['lchild']['lheight'], subtree['lchild']['rheight'] ) + 1;
         elif(subtree['lchild'] == None):
-            #pdb.set_trace()
             subtree['lheight'] = 0;
             subtree['rheight'] = max( subtree['rchild']['lheight'], subtree['rchild']['rheight'] ) + 1;
         else:
