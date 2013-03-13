@@ -15,14 +15,15 @@ def max(a,b):
 class AVLTree(BinarySearchTree):
     def __init__(self):
         BinarySearchTree.__init__(self)
-        #super(AVLTree, self).__init__(self)
+
+
 
     def fixSubtreeHeights(self,subtree):
         if(subtree['rchild'] != None ):
             self.fixSubtreeHeights(subtree['rchild'])
         if(subtree['lchild'] != None ):
             self.fixSubtreeHeights(subtree['lchild'])
-
+        #By the time we get here we will be working bottom up so everything below the current node will have the correct height.
         if(subtree['rchild'] == None and subtree['lchild'] == None):
             subtree['lheight'] = 0;
             subtree['rheight'] = 0;
@@ -40,102 +41,95 @@ class AVLTree(BinarySearchTree):
 
 
     def balance(self,node,cb,p):
-        #pdb.set_trace()
-        if(cb == 'lchild' and node[cb]['rheight'] > node[cb]['lheight'] and math.fabs( node['lheight'] - node['rheight'] ) >= 2 ): #double rotation
+        #Check if we need to do a double rotation. If so, do it.
+        if(cb == 'lchild' and node[cb]['rheight'] > node[cb]['lheight'] and math.fabs( node['lheight'] - node['rheight'] ) >= 2 ):
             self.balance(node[cb],'rchild',node)
-        elif(cb == 'rchild' and node[cb]['lheight'] > node[cb]['rheight'] and math.fabs( node['lheight'] - node['rheight'] ) >= 2 ): #double rotation
+        elif(cb == 'rchild' and node[cb]['lheight'] > node[cb]['rheight'] and math.fabs( node['lheight'] - node['rheight'] ) >= 2 ):
             self.balance(node[cb],'lchild',node)
-        if(p != None):
-            print("Balancing {0}. Parent = {1}. Childbranch = {2}".format(node['object'],p['object'],cb))
-        else:
-            print("Balancing {0}. Parent = None. Childbranch = {1}".format(node['object'],cb))
+
+        #Set a direction variable.
         if( cb == 'lchild' ):
             notcb = 'rchild'
         else:
             notcb = 'lchild'
+        #If there is no parent we have to do our re-routing slightly different.
         if( p == None ):
             self.root = node[cb]
             node[cb] = node[cb][notcb]
             self.root[notcb] = node
-            print("Fixing Heights.")
+            #Fix heights.
             self.fixSubtreeHeights(self.root)
+            #Return the replaced node.
             return self.root
+        #There is a parent, so do our re-routing accordingly.
         else:
+            #Set another direction variable.
             if( p['rchild'] == node ):
                 pb = 'rchild'
                 notpb = 'lchild'
             elif( p['lchild'] == node):
                 pb = 'lchild'
                 notpb = 'rchild'
-            else:
-                print("Oh crap.")
-            print("Parentbranch = {0}".format(pb))
             p[pb] = node[cb]
             node[cb] = node[cb][notcb]
             p[pb][notcb] = node
-            print("PRINTING TREE")
-            self.__unicode__()
-            print("Fixing Heights.")
+            #Fix heights.
             self.fixSubtreeHeights(self.root)
+            #Return the replaced node.
             return p[pb]
+
 
 
     def add(self, value, node=None, parent=None):
         #If no parent is provided then the user is calling "add" so set node to self.root for initial run through.
-        #if(value == 'viola'):
-            #pdb.set_trace()
         if(parent == None):
             node = self.root
-        #Place value and return.
+        #Place value and return if we have found an empty spot.
         if(node == None):
             node = {'object':value,'lchild':None,'rchild':None,'lheight':0,'rheight':0}
             if( parent == None):
                 self.root = node
                 return True
             return node;
-        #Going left.
+        #Going left recursively.
         if(value < node['object']):
+            #I am being very careful with my return statements in this function because of this next time. I don't want 'child' set to True or False.
             child = self.add(value,node['lchild'],node)
             if( child ):
                 node['lchild'] = child;
-                print("Fixing Heights.")
+                #Fix heights because we did some re-routing.
                 self.fixSubtreeHeights(self.root)
+                #Check if we need to balance. Balance recursively if necessary.
                 while( math.fabs( node['lheight'] - node['rheight'] ) >= 2 ):
                     if(node['lheight'] - node['rheight'] > 0 ):
                         node = self.balance(node,'lchild',parent);
                     else:
                         node = self.balance(node,'rchild',parent);
-                    print("PRINTING 2. Node = {0}".format(node['object']))
-                    self.__unicode__()
+                #If there is no parent we need to return True because we are at the top and we want the overall add function to return True / False.
                 if( parent == None):
-                    print("PRINTING 3. Node = {0}".format(node['object']))
-                    self.__unicode__()
                     return True;
-                print("PRINTING 5. Node = {0}".format(node['object']))
-                self.__unicode__()
                 return node;
-        #Going right.
+        #Going right recursively.
         elif(value > node['object']):
+            #I am being very careful with my return statements in this function because of this next time. I don't want 'child' set to True or False.
             child = self.add(value,node['rchild'],node)
             if ( child ):
                 node['rchild'] = child;
-                print("Fixing Heights.")
+                #Fix heights because we did some re-routing.
                 self.fixSubtreeHeights(self.root)
+                #Check if we need to balance. Balance recursively if necessary.
                 while( math.fabs( node['rheight'] - node['lheight'] ) >= 2 ):
                     if(node['lheight'] - node['rheight'] > 0 ):
                         node = self.balance(node,'lchild',parent);
                     else:
                         node = self.balance(node,'rchild',parent);
-                    print("PRINTING 2. Node = {0}".format(node['object']))
-                    self.__unicode__()
+                #If there is no parent we need to return True because we are at the top and we want the overall add function to return True / False.
                 if( parent == None):
-                    print("PRINTING 3. Node = {0}".format(node['object']))
-                    self.__unicode__()
                     return True;
-                print("PRINTING 6. Node = {0}".format(node['object']))
-                self.__unicode__()
                 return node;
+        #If we got here then the value already exists, so return False.
         return False;
+
 
 
 
@@ -153,9 +147,9 @@ def main():
 
     while(line != ''):
         print
-        #print( "\"{0}\" was put into the tree == {1}".format(line[:-1], tree.add(line[:-1])))
-        print( "\"{0}\" was put into the tree".format(line[:-1]))
+        print( "Putting \"{0}\" into the tree".format(line[:-1]))
         tree.add(line[:-1])
+        #Print the tree
         tree.__unicode__()
         line = infile.readline() #get rid of the elo character
 

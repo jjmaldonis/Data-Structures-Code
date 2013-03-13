@@ -22,6 +22,17 @@ class BinarySearchTree:
         else:
             return False;
 
+    def makeEmpty(self,subtree=None):
+        if(subtree == None):
+            subtree = self.root
+        if(subtree['rchild'] != None ):
+            self.makeEmpty(subtree['rchild'])
+        if(subtree['lchild'] != None ):
+            self.makeEmpty(subtree['lchild'])
+        #By the time we get here we will be working bottom up so everything below the current node will be gone.
+        subtree = None
+ 
+
     def balance(self,node):
         print("Balancing {0}".format(node['object']))
         pass
@@ -30,7 +41,7 @@ class BinarySearchTree:
         #If no parent is provided then the user is calling "add" so set node to self.root for initial run through.
         if(parent == None):
             node = self.root
-        #Place value and return.
+        #Place value and return if we have found an open spot.
         if(node == None):
             node = {'object':value,'lchild':None,'rchild':None,'lheight':0,'rheight':0}
             if( parent == None):
@@ -76,6 +87,7 @@ class BinarySearchTree:
         return False;
 
     def __getitem__(self, value, node=None, parent=None):
+        #Recursive function that is based on its previous return value. It's really pretty self explanatory.
         if( node == None):
             node = self.root
         if( node == None):
@@ -93,11 +105,10 @@ class BinarySearchTree:
         return False
 
     def __unicode__(self, cur=u"", pfx=u"", node=None):
-        # │ └ _ - └ |
+        #A complex funtion that you will have to work through to understand. It's not so bad though if you ignore the cur and pfx arguments which are just for formatting.
         if( node == None):
             node = self.root
         print("{0}{1}{2} [{3},{4}]".format( pfx, cur, node['object'], node['lheight'], node['rheight'] ) )
-
         if( node['rchild'] != None ):
             if( node['lchild'] != None ):
                 self.__unicode__(u"\\", pfx + u"| ", node['rchild'])
