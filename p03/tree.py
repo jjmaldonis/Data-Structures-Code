@@ -134,7 +134,7 @@ def main():
         print( "\"{0}\" was put into the tree == {1}".format(line[:-1], tree.add(line[:-1])))
         #tree.add(line[:-1])
         tree.__unicode__()
-        line = infile.readline() #get rid of the elo character
+        line = infile.readline()
 
     return 0;
 

@@ -150,7 +150,7 @@ def main():
         tree.add(line[:-1])
         #Print the tree
         tree.__unicode__()
-        line = infile.readline() #get rid of the elo character
+        line = infile.readline()
 
     return 0;
 
