@@ -1,7 +1,8 @@
+#took 435 sec to run
 import time
 import sys
 import getopt
-import hashtable
+import hashtable_rand
 
 PERTURB_SHIFT = 5
 
@@ -17,7 +18,6 @@ def search(word,dic): #searches dic for word and for word.reverse(). returns 0 i
 
 
 def main():
-
     start = time.time()
 
     #read in file argument (which is the word matrix) and print the matrix as well
@@ -29,7 +29,7 @@ def main():
     while line != '':
         line = line.replace(" ","")
         matrix.append(line[:-1]) #dont include the eol char
-        #print(line)
+        print(line)
         line = infile.readline()
     nrows = len(matrix[0])
     ncol = len(matrix)
@@ -39,7 +39,7 @@ def main():
 
     #load the dictionary into the hash table
     #print("Loading the dictionary...")
-    dic = hashtable.Hashtable() #create hash table
+    dic = hashtable_rand.Hashtable() #create hash table
     if len(sys.argv) > 2:
         infile = open(sys.argv[2],'r')
     else:
@@ -92,6 +92,7 @@ def main():
 
     end = time.time()
     print("Program took {0} seconds to run.".format(end-start))
+
     return None
 
 
