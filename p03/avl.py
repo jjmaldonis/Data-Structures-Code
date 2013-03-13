@@ -1,3 +1,5 @@
+import pdb
+import math
 import time
 import sys
 import getopt
@@ -28,6 +30,7 @@ class AVLTree(BinarySearchTree):
             subtree['rheight'] = 0;
             subtree['lheight'] = max( subtree['lchild']['lheight'], subtree['lchild']['rheight'] ) + 1;
         elif(subtree['lchild'] == None):
+            #pdb.set_trace()
             subtree['lheight'] = 0;
             subtree['rheight'] = max( subtree['rchild']['lheight'], subtree['rchild']['rheight'] ) + 1;
         else:
@@ -37,6 +40,19 @@ class AVLTree(BinarySearchTree):
 
 
     def balance(self,node,cb,p):
+        #pdb.set_trace()
+        if(cb == 'lchild' and node[cb]['rheight'] > node[cb]['lheight'] ): #double rotation
+            node['lchild'] = node['rchild']['rchild']
+            node['rchild']['rchild'] = node['rchild']['rchild'][not'rchild']
+            node['lchild']['lchild'] = node['rchild']
+            print("Fixing Heights.")
+            self.fixSubtreeHeights(self.root)
+        elif(cb == 'rchild' and node[cb]['lheight'] > node[cb]['rheight'] ): #double rotation
+            node['rchild'] = node['lchild']
+            node['lchild']['lchild'] = node['lchild']['lchild']['rchild']
+            node['rchild']['rchild'] = node['lchild']
+            print("Fixing Heights.")
+            self.fixSubtreeHeights(self.root)
         if(p != None):
             print("Balancing {0}. Parent = {1}. Childbranch = {2}".format(node['object'],p['object'],cb))
         else:
@@ -49,6 +65,9 @@ class AVLTree(BinarySearchTree):
             self.root = node[cb]
             node[cb] = node[cb][notcb]
             self.root[notcb] = node
+            print("Fixing Heights.")
+            self.fixSubtreeHeights(self.root)
+            return self.root
         else:
             if( p['rchild'] == node ):
                 pb = 'rchild'
@@ -58,25 +77,21 @@ class AVLTree(BinarySearchTree):
                 notpb = 'rchild'
             else:
                 print("Oh crap.")
-            #if(pb != cb): #double rotation
-                #self.balance()
             print("Parentbranch = {0}".format(pb))
-            #print("{0} set to {1}".format(p[pb]['object'],node[cb]['object']))
             p[pb] = node[cb]
-            #print("{0} set to {1}".format(node[cb]['object'],node[cb][notcb]['object']))
             node[cb] = node[cb][notcb]
-            #print("{0} set to {1}".format(p[pb][notcb]['object'],node['object']))
-            p[pb][notcb] = node #should that be notpb??? instead of notcb???
-            #p[pb] = node[cb][notcb]
-            print(p[pb]['object'])
+            p[pb][notcb] = node
             print("PRINTING TREE")
             self.__unicode__()
-
+            print("Fixing Heights.")
             self.fixSubtreeHeights(self.root)
-        return None
+            return p[pb]
+
 
     def add(self, value, node=None, parent=None):
         #If no parent is provided then the user is calling "add" so set node to self.root for initial run through.
+        if(value == 'viola'):
+            pdb.set_trace()
         if(parent == None):
             node = self.root
         #Place value and return.
@@ -91,24 +106,19 @@ class AVLTree(BinarySearchTree):
             child = self.add(value,node['lchild'],node)
             if( child ):
                 node['lchild'] = child;
+                print("Fixing Heights.")
                 self.fixSubtreeHeights(self.root)
-                #if( node['lchild'] and node['rchild'] ):
-                    #node['lheight'] = max( max(node['lchild']['lheight'], node['lchild']['rheight'] ) + 1, max(node['rchild']['lheight'], node['rchild']['rheight'] ) );
-                #elif( node['lchild'] ):
-                    #node['lheight'] = max( node['lchild']['lheight'], node['lchild']['rheight']) + 1
-                #elif( node['rchild'] ):
-                    #node['lheight'] = max( node['rchild']['lheight'], node['rchild']['rheight'])
-                #else:
-                    #node['lheight'] += 1
-                if( node['lheight'] - node['rheight'] >= 2 ):
-                    self.balance(node,'lchild',parent);
+                while( math.fabs( node['lheight'] - node['rheight'] ) >= 2 ):
+                    if(node['lheight'] - node['rheight'] > 0 ):
+                        node = self.balance(node,'lchild',parent);
+                    else:
+                        node = self.balance(node,'rchild',parent);
                     print("PRINTING 2. Node = {0}".format(node['object']))
                     self.__unicode__()
                 if( parent == None):
                     print("PRINTING 3. Node = {0}".format(node['object']))
                     self.__unicode__()
                     return True;
-                self.fixSubtreeHeights(self.root)
                 print("PRINTING 5. Node = {0}".format(node['object']))
                 self.__unicode__()
                 return node;
@@ -117,17 +127,13 @@ class AVLTree(BinarySearchTree):
             child = self.add(value,node['rchild'],node)
             if ( child ):
                 node['rchild'] = child;
+                print("Fixing Heights.")
                 self.fixSubtreeHeights(self.root)
-                #if( node['lchild'] and node['rchild'] ):
-                    #node['rheight'] = max( max(node['lchild']['lheight'], node['lchild']['rheight']), max(node['rchild']['lheight'], node['rchild']['rheight'] ) + 1 );
-                #elif( node['lchild'] ):
-                    #node['rheight'] = max( node['lchild']['lheight'], node['lchild']['rheight'] )
-                #elif( node['rchild'] ):
-                    #node['rheight'] = max( node['rchild']['lheight'], node['rchild']['rheight'] ) + 1
-                #else:
-                    #node['rheight'] += 1
-                if( node['rheight'] - node['lheight'] >= 2 ):
-                    self.balance(node,'rchild',parent);
+                while( math.fabs( node['rheight'] - node['lheight'] ) >= 2 ):
+                    if(node['lheight'] - node['rheight'] > 0 ):
+                        node = self.balance(node,'lchild',parent);
+                    else:
+                        node = self.balance(node,'rchild',parent);
                     print("PRINTING 2. Node = {0}".format(node['object']))
                     self.__unicode__()
                 if( parent == None):
