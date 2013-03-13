@@ -41,18 +41,10 @@ class AVLTree(BinarySearchTree):
 
     def balance(self,node,cb,p):
         #pdb.set_trace()
-        if(cb == 'lchild' and node[cb]['rheight'] > node[cb]['lheight'] ): #double rotation
-            node['lchild'] = node['rchild']['rchild']
-            node['rchild']['rchild'] = node['rchild']['rchild'][not'rchild']
-            node['lchild']['lchild'] = node['rchild']
-            print("Fixing Heights.")
-            self.fixSubtreeHeights(self.root)
-        elif(cb == 'rchild' and node[cb]['lheight'] > node[cb]['rheight'] ): #double rotation
-            node['rchild'] = node['lchild']
-            node['lchild']['lchild'] = node['lchild']['lchild']['rchild']
-            node['rchild']['rchild'] = node['lchild']
-            print("Fixing Heights.")
-            self.fixSubtreeHeights(self.root)
+        if(cb == 'lchild' and node[cb]['rheight'] > node[cb]['lheight'] and math.fabs( node['lheight'] - node['rheight'] ) >= 2 ): #double rotation
+            self.balance(node[cb],'rchild',node)
+        elif(cb == 'rchild' and node[cb]['lheight'] > node[cb]['rheight'] and math.fabs( node['lheight'] - node['rheight'] ) >= 2 ): #double rotation
+            self.balance(node[cb],'lchild',node)
         if(p != None):
             print("Balancing {0}. Parent = {1}. Childbranch = {2}".format(node['object'],p['object'],cb))
         else:
@@ -90,8 +82,8 @@ class AVLTree(BinarySearchTree):
 
     def add(self, value, node=None, parent=None):
         #If no parent is provided then the user is calling "add" so set node to self.root for initial run through.
-        if(value == 'viola'):
-            pdb.set_trace()
+        #if(value == 'viola'):
+            #pdb.set_trace()
         if(parent == None):
             node = self.root
         #Place value and return.
