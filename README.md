@@ -19,3 +19,53 @@ Array:
 B-Tree:
     Array implementation of a binary tree. This is very useful when you can't store the entire binary tree data structure in memory.
 
+
+
+Skip lists: Here is an implementation for some functions:
+    nodestruct:
+        next[]
+        val
+
+    def find(item):
+        #We are going to return an array of nodes, and the array 'steps' will contains these. They will be the (rightmost) node at which we went down a level.
+        #If the item exists, it will return the node containing the item at the beginning of the array 'steps'.
+        #If the item does not exist in the list, the node before where the item would have been is returned at the beginning of the array 'steps'.
+        steps = []
+        node = self.head
+        level = len(node.next) -1
+        while(level >= 0):
+            while(node.next[level] and node.next[level].val <= item):
+                node = node.next[level]
+            steps.append(node)
+            level = level - 1
+        return reversed(steps)
+
+    def search(item):
+        node = find(item)[0];
+        if(node == self.head):
+            return False;
+        return (node.val == item)
+
+    #This is an implementation of a Random-Height Skip List's insert function.
+    #When finding the spot at which to insert, initially set the level to 0, then flip a coin, if heads, put item into the list at the level, if tails do level++; and repeat the coin toss.
+    def insert(item):
+        #We don't want to search because because it's a waste if the item isn't in there because you just have to call find again in the search function.
+        node = find(item)
+        if(node == self.head):
+            #Item is not in there, but self.head does not have a .val so we must be careful.
+        elif( node.val != item):
+            #Now we know that node is the node before where we want to insert item.
+            new = nodestruct()
+            new.val = item
+            #Generate a random number, either 0 or 1. Also, set a max height of 4.
+            while( len(new.next) < 4 and random.getrandbits(1) ):
+                    lvl = len(new.next)
+                    new.next.append( node[lvl].next[level] )
+                    #Now we need to change the pointers before the new node to point to it when they should.
+                    node[level].next[level] = new;
+            
+        else:
+            #The item is already in there because the last elif returned false (i.e. node.val == item).
+            return False;
+
+
