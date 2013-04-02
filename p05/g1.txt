@@ -1,0 +1,15 @@
+graph graph1
+    node A
+        neighbor B
+            weight 1
+        neighbor C
+            weight 2
+
+    node B
+        neighbor A
+            weight 1
+
+    node C
+        neighbor A
+            weight 2
+
