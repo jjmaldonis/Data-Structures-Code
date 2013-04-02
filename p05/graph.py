@@ -127,9 +127,9 @@ def main():
         for aNode in nodes:
             print("  Node {0} is of degree {1}.".format(aNode,graph.degree(aNode)))
             neighbors = graph.neighbors(aNode);
-            print( "    The neighbors of {0} are {1}.".format(aNode,neighbors) )
+            print( "  The neighbors of {0} are {1}.".format(aNode,neighbors) )
             for neigh in neighbors:
-                print("      The {0}-{1} edge has weight {2}.".format(aNode,neigh,graph.edge_weight(aNode,neigh)))
+                print("    The {0}-{1} edge has weight {2}.".format(aNode,neigh,graph.edge_weight(aNode,neigh)))
 
     #parser = ctypes.CDLL('/home/students/jjmaldonis/refreshx2/p05/parser/gml_parser.so')
     #testlib = ctypes.CDLL("libc.so.6")
