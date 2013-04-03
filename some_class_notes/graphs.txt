@@ -1,0 +1,29 @@
+
+
+def single_source_shortest_path(self,n):
+    dist = {}
+    visited = {}
+    dist[n] = 0
+    for i in range(len(self)):
+        for cnode in self:
+            if not cnode in visited and dist[cnode] == i:
+                visted[cnode] = True
+                for nnode in self[cnode]:
+                    if nnode not in dist:
+                        dist[nndoe] = dist[cnode] + 1
+    return dist
+
+
+Here is a better way:
+def single_source_shortlest_path(self,n):
+    dist = {}
+    queue = []
+    dist[n] = 0
+    queue.append(n)
+    while(len(queue)):
+        cnode = queue.pop(0)
+        for nnode in self[cnode]:
+            if nnode not in dist:
+                dist[nnode] = dist[cnode]+1
+                queue.append(nnode)
+    return dist
