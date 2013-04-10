@@ -1,3 +1,4 @@
+import heapq
 #import ctypes
 #import sys
 #import getopt
@@ -44,7 +45,7 @@ class Graph(object):
                 nextLineIsW = True
 
             elif(indent == 3 and words[0] == "weight"):
-                self.graph[name][neigh] = words[1]
+                self.graph[name][neigh] = eval(words[1])
                 nextLineIsW = False
                 #I could use eval around words[1] in the line above to store an int instead of a string but its irrelevant as far as the printout goes
 
@@ -104,6 +105,34 @@ class Graph(object):
         """
         return self.graph[src][dst];
 
+    def __unicode__(self):
+        return unicode(self)
+    
+    def single_source_shortlest_path(self,n):
+        #A heap pops off the thing that is the lowest in the heap
+        queue = []
+        #queue = Heap()
+        #Inserting as a tuple
+        heapq.heappush(queue,(0,n))
+        dist = {n:0}
+        path = {n:None}
+        visited = {}
+        while(len(queue)):
+            #The following line actually works in python because we are inserting tuples!
+            weight, curnode = heapq.heappop( queue )
+            if curnode in visited:
+                continue
+            visited[curnode] = True
+            for nnode in self.graph[curnode]:
+                neighDist = dist[curnode] + self.graph[curnode][nnode]
+                if nnode not in dist or neighDist < dist[nnode]:
+                    dist[nnode] = neighDist
+                    path[nnode] = curnode
+                    heapq.heappush(queue, (neighDist,nnode) )
+        return dist
+
+
+
 def main():
 
     #Text file g1 contains a basic graph as shown below:
@@ -128,8 +157,13 @@ def main():
             print("  Node {0} is of degree {1}.".format(aNode,graph.degree(aNode)))
             neighbors = graph.neighbors(aNode);
             print( "  The neighbors of {0} are {1}.".format(aNode,neighbors) )
+            sstp = graph.single_source_shortlest_path(aNode)
+            print("  The path array for {0} is {1}".format(aNode, sstp) )
             for neigh in neighbors:
                 print("    The {0}-{1} edge has weight {2}.".format(aNode,neigh,graph.edge_weight(aNode,neigh)))
+
+
+
 
     #parser = ctypes.CDLL('/home/students/jjmaldonis/refreshx2/p05/parser/gml_parser.so')
     #testlib = ctypes.CDLL("libc.so.6")
