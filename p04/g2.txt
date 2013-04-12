@@ -1,0 +1,19 @@
+graph graph2
+    node Jason
+        neighbor Kyle
+            weight 1
+        neighbor Don
+            weight 3
+
+    node Kyle
+        neighbor Jason
+            weight 1
+        neighbor Don
+            weight 2
+
+    node Don
+        neighbor Kyle
+            weight 2
+        neighbor Jason
+            weight 3
+
