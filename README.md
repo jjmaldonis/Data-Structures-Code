@@ -10,7 +10,7 @@ Binary Search Tree:
     log N lookup time.
     Sorted order.
 
-Array:
+Array/Vector:
     Can keep in sorted order.
     log N lookup time by looking at the middle element each time.
     Insertion is slow.

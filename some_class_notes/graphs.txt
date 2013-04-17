@@ -27,3 +27,31 @@ def single_source_shortlest_path(self,n):
                 dist[nnode] = dist[cnode]+1
                 queue.append(nnode)
     return dist
+
+
+If you want to keep track of weighted edges, you change the line 'dist[nnode] = dist[cnode] + 1' to 'dist[nnode] = dist[cnode] + weight_of_edge'. You also need to change the order that you put nodes into the queue so that you order them with 'the shortest distance to node n'. You still always pop the node at the beginning (like always) but now that node first node is the node that is the next closest to your starting node n. This code now keeps track of the path as well in 'path' (kinda - it gives you the node that got you to the spot (ie the previous node) so that you can trace it back really easily).
+
+#This is psuedocode really!
+def single_source_shortlest_path(self,n):
+    #A heap pops off the thing that is the lowest in the heap
+    queue = Heap()
+    #Inserting as a tuple
+    queue.heappush((0,n))
+    dist = {n:0}
+    path = {n:None}
+    visited = {}
+    while(len(queue)):
+        #The following line actually works in python because we are inserting tuples!
+        weight, curnode = queue.heappop(0)
+        if curnode in visited:
+            continue
+        visited[curnode] = True
+        for nnode in self[curnode]:
+            neighDist = dist[curnode] + self[curnode][nnode]
+            if nnode not in dist or nieghDist < dist[nnode]:
+                dist[nnode] = neighDist
+                path[nnode] = curnode
+                queue.heappush( (neighDist,nnode) )
+    return dist
+
+
