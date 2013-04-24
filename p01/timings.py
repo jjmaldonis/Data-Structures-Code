@@ -8,25 +8,21 @@ def time_merge(l):
     start = time.time()
     merge.merge_sort(l)
     return time.time() - start
-    #print ('  Merge sort     took %.08f sec.' % elapsed )
 
 def time_quick(l):
     start = time.time()
     quick.quick(l)
     return time.time() - start
-    #print ('  Quick sort     took %.08f sec.' % elapsed )
 
 def time_insertion(l):
     start = time.time()
     insertion.insertion(l)
     return time.time() - start
-    #print ('  Insertion sort took %.08f sec.' % elapsed )
 
 def time_pythonsort(l):
     start = time.time()
     insertion.insertion(l)
     return time.time() - start
-    #print ('  Python\'s sort  took %.08f sec.' % elapsed )
 
 
 def sorts_on_list(l):

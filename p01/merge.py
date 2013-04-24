@@ -1,4 +1,3 @@
-
 import random
 
 def merge_sort(l):
@@ -33,10 +32,9 @@ def merge(left,right):
 def main():
     l = range(10)
     random.shuffle(l)
-    print ( "Before Sort: {0}".format(l) )
-    print( "running merge_sort" )
+    print ( "Before Merge Sort: {0}".format(l) )
     l = merge_sort(l)
-    print( "After Sort: {0}".format(l) )
+    print( "After Merge Sort: {0}".format(l) )
 
 if __name__ == '__main__':
     main()
