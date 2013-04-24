@@ -29,6 +29,7 @@ class BinarySearchTree:
             self.makeEmpty(subtree['rchild'])
         if(subtree['lchild'] != None ):
             self.makeEmpty(subtree['lchild'])
+
         #By the time we get here we will be working bottom up so everything below the current node will be gone.
         subtree = None
  
@@ -41,6 +42,7 @@ class BinarySearchTree:
         #If no parent is provided then the user is calling "add" so set node to self.root for initial run through.
         if(parent == None):
             node = self.root
+
         #Place value and return if we have found an open spot.
         if(node == None):
             node = {'object':value,'lchild':None,'rchild':None,'lheight':0,'rheight':0}
@@ -48,6 +50,7 @@ class BinarySearchTree:
                 self.root = node
                 return True
             return node;
+
         #Going left.
         if(value < node['object']):
             child = self.add(value,node['lchild'],node)
@@ -66,6 +69,7 @@ class BinarySearchTree:
                 if( parent == None):
                     return True;
                 return node;
+
         #Going right.
         elif(value > node['object']):
             child = self.add(value,node['rchild'],node)
@@ -123,6 +127,7 @@ def main():
 
     infile = open(sys.argv[1],'r')
     line = infile.readline()
+
     #Check to see if the input file was blank
     if (line == ''):
         return None
@@ -132,7 +137,6 @@ def main():
     while(line != ''):
         print
         print( "\"{0}\" was put into the tree == {1}".format(line[:-1], tree.add(line[:-1])))
-        #tree.add(line[:-1])
         tree.__unicode__()
         line = infile.readline()
 
