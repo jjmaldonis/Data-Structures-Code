@@ -39,8 +39,8 @@ class Hashtable:
         self.entries = 0.0
         self.pos = 0
         self.size = self.size + 1
-        #Copy the old table
-        temphtable = self.htable[:]
+        #Point a temp pointer at the current hashtable
+        temphtable = self.htable
         #Replace old table with the new bigger one
         self.htable = [None] * (2**self.size)
         for i in range(0, 2**(self.size-1)):
