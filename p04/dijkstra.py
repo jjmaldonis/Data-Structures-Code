@@ -9,12 +9,16 @@ class Graph(object):
         """ constructor 
         @param gmlfile optional file argument to load into the graph.
         """
+        if gmlfile is None:
+            raise Exception("No input graph file was given.")
+
         super(Graph, self).__init__()
         infile = open(gmlfile,'r')
         self.graph = {}
         for line in infile:
             words = line.split()
-            #If there are an incorrect number of words / variables on this input line raise an exception.
+
+            # If there are an incorrect number of words / variables on this input line raise an exception.
             if(len(words) != 2 and len(words) != 3):
                 raise Exception("Number of arguments per line in input file is not 2 or 3.")
             if(len(words) == 3):
@@ -30,10 +34,8 @@ class Graph(object):
         @return None
         """
         if node not in self.graph:
-            self.graph[node] = {}
-        else:
             raise Exception("Node already exists.")
-        return None
+        self.graph[node] = {}
 
     def add_edge(self, src, dst, weight=1):
         """ add an edge between two nodes
@@ -58,7 +60,7 @@ class Graph(object):
 
     def nodes(self):
         """ returns a list of all nodes """
-        #Note that returning this returns a LIST whereas self.graph is a dictionary. Therefore a user searching through this (and having to use the list) is much slower than the programmer's search.
+        # Note that returning this returns a LIST whereas self.graph is a dictionary. Therefore a user searching through this (and having to use the list) is much slower than the programmer's search.
         return self.graph.keys()
 
     def neighbors(self, node):
@@ -87,15 +89,15 @@ class Graph(object):
         return unicode(self)
     
     def single_source_shortest_path(self, n):
-        #A heap pops off the thing that is the lowest in the heap so we make queue a heap.
+        # A heap pops off the thing that is the lowest in the heap so we make queue a heap.
         queue = []
-        #Inserting as a tuple
+        # Inserting as a tuple
         heapq.heappush(queue, (0, n))
         dist = {n:0}
         path = {n:None}
         visited = {}
         while(len(queue)):
-            #Insert a touple into the heap to keep the order correct (order goes by the first element first). Note that weight is unused but I will leave it for potential future changes.
+            # Insert a touple into the heap to keep the order correct (order goes by the first element first). Note that weight is unused but I will leave it for potential future changes.
             weight, curnode = heapq.heappop( queue )
             if curnode in visited:
                 continue
@@ -109,6 +111,7 @@ class Graph(object):
         return dist, path
 
 
+
 def main():
     graph = Graph(sys.argv[1])
 
@@ -117,14 +120,15 @@ def main():
     else:
         nodes = sys.argv[2:]
 
-    #Create a heap for the printout so we can print in shortest-path-first order.
+    # Create a heap for the printout so we can print in shortest-path-first order.
     printout = []
-    #For each node that the user wants us to calculate the shortest paths for, do it and print the results.
+
+    # For each node that the user wants us to calculate the shortest paths for, do it and print the results.
     for aNode in nodes:
-        #Calculate shortest paths
+        # Calculate shortest paths
         dist, path = graph.single_source_shortest_path(aNode)
         for node in dist:
-            #For each node connected to aNode compute the path to get there and put the results into the printout heap (in order using touples).
+            # For each node connected to aNode compute the path to get there and put the results into the printout heap (in order using touples).
             if(aNode != node):
                 thisPath = ''
                 temp = node
@@ -134,7 +138,7 @@ def main():
                 thisPath = path[temp] + ', ' + thisPath + node
                 printline = "{0} -> {1} \t {2} \t {3}".format(aNode, node, dist[node], thisPath)
                 heapq.heappush( printout, (dist[node], len(printline), printline) )
-        #Print the heap and empty it.
+        # Print the heap and empty it.
         while(printout):
             print(heapq.heappop(printout)[2])
         print
