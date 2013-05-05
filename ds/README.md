@@ -52,3 +52,6 @@ Functions include:
         Removes all items from the tree, making an empty tree.
     isEmpty()
         Returns True if the tree is empty, False otherwise.
+
+
+Note: DC said I should not have more than 3 levels of indentation in my AVL Tree because it can get hard to follow. However, I'm going to leave it because I actually think I'd get more confused if I did that; and my comments are good and quite helpful.

@@ -2,12 +2,10 @@ import heapq
 
 
 class Graph(object):
-    """ undirected graph class """
+    """ Undirected graph class. """
 
     def __init__(self):
-        """ constructor 
-        No parameters, simple constructor
-        """
+        """ Simple constructor. """
         super(Graph, self).__init__()
         self.graph = {}
 
@@ -46,7 +44,8 @@ class Graph(object):
 
     def nodes(self):
         """ returns a list of all nodes """
-        # Note that returning this returns a LIST whereas self.graph is a dictionary. Therefore a user searching through this (and having to use the list) is much slower than the programmer's search.
+        # Note that returning this returns a LIST whereas self.graph is a dictionary.
+        # Therefore a user searching through this (and having to use the list) is much slower than the programmer's search.
         return self.graph.keys()
 
     def neighbors(self, node):
@@ -83,7 +82,8 @@ class Graph(object):
         path = {n:None}
         visited = {}
         while(len(queue)):
-            # Insert a touple into the heap to keep the order correct (order goes by the first element first). Note that weight is unused but I will leave it for potential future changes.
+            # Insert a touple into the heap to keep the order correct (order goes by the first element first).
+            # Note that weight is unused but I will leave it for potential future changes.
             weight, curnode = heapq.heappop( queue )
             if curnode in visited:
                 continue

@@ -13,11 +13,15 @@ def max(a,b):
 class BinarySearchTree:
 
     def __init__(self):
+        """ Initialization function.
+        Creates an empty root.
+        """
         self.root = None
         return None;
 
 
     def isEmpty(self):
+        """ Returns True if tree is empty, False otherwise. """
         if(self.root == None):
             return True;
         else:
@@ -25,6 +29,7 @@ class BinarySearchTree:
 
 
     def makeEmpty(self,subtree=None):
+        """ Removes all elements from the tree. """
         if(subtree == None):
             subtree = self.root
         if(subtree['rchild'] != None ):
@@ -38,11 +43,15 @@ class BinarySearchTree:
  
 
     def add(self, value, node=None, parent=None):
-        #If no parent is provided then the user is calling "add" so set node to self.root for initial run through.
+        """ Adds item to the tree.
+        Returns True on success, False otherwise.
+        An item is not added twice and False will be returned if this is attempted.
+        """
+        # If no parent is provided then the user is calling "add" so set node to self.root for initial run through.
         if(parent == None):
             node = self.root
 
-        #Place value and return if we have found an open spot.
+        # Place value and return if we have found an open spot.
         if(node == None):
             node = {'object':value,'lchild':None,'rchild':None,'lheight':0,'rheight':0}
             if( parent == None):
@@ -50,7 +59,7 @@ class BinarySearchTree:
                 return True
             return node;
 
-        #Going left.
+        # Going left.
         if(value < node['object']):
             child = self.add(value,node['lchild'],node)
             if( child ):
@@ -69,7 +78,7 @@ class BinarySearchTree:
                     return True;
                 return node;
 
-        #Going right.
+        # Going right.
         elif(value > node['object']):
             child = self.add(value,node['rchild'],node)
             if ( child ):
@@ -91,7 +100,8 @@ class BinarySearchTree:
 
 
     def __getitem__(self, value, node=None, parent=None):
-        #Recursive function that is based on its previous return value. It's really pretty self explanatory.
+        """ Returns True if the item is in the tree, False otherwise. """
+        # Recursive function that is based on its previous return value. It's really pretty self explanatory.
         if( node == None):
             node = self.root
         if( node == None):
@@ -110,12 +120,16 @@ class BinarySearchTree:
 
 
     def __unicode__(self, cur=u"", pfx=u"", node=None, output=sys.stdout):
+        """ Prints the tree.
+        The output (in string format) can be redicted this function's return value if 'output="string"' is specified as an argument.
+        """
+        # A complex funtion that you will have to work through to understand. It's not so bad though if you ignore the cur and pfx arguments which are just for formatting.
+        # fullOut and mystdout are for redirecting the output to the return value.
         fullOut = ""
         mystdout = StringIO()
         if( output == "string" and sys.stdout != StringIO() ):
             old_stdout = sys.stdout
             sys.stdout = mystdout
-        #A complex funtion that you will have to work through to understand. It's not so bad though if you ignore the cur and pfx arguments which are just for formatting.
         if( self.root == None ):
             return None
         if( node == None):
@@ -131,12 +145,14 @@ class BinarySearchTree:
 
 
 class AVLTree(BinarySearchTree):
+    
     def __init__(self):
+        """ Initializes a standard binary tree. """
         BinarySearchTree.__init__(self)
 
 
-
     def fixSubtreeHeights(self,subtree):
+        """ Corrects the heights of an input tree (or subtree). """
         if(subtree['rchild'] != None ):
             self.fixSubtreeHeights(subtree['rchild'])
         if(subtree['lchild'] != None ):
@@ -153,8 +169,8 @@ class AVLTree(BinarySearchTree):
             subtree['lheight'] = 0;
 
 
-
     def balance(self,node,cb,p):
+        """ Balances the tree according the AVL tree rules. """
         # Check if we need to do a double rotation. If so, do it.
         if(cb == 'lchild' and node[cb]['rheight'] > node[cb]['lheight'] and math.fabs( node['lheight'] - node['rheight'] ) >= 2 ):
             self.balance(node[cb],'rchild',node)
@@ -200,8 +216,13 @@ class AVLTree(BinarySearchTree):
 
 
     def add(self, value, node=None, parent=None):
+        """ Adds an element to the tree.
+        The tree is rebalanced and heights are fixed accordingly if necessary.
+        Returns True on success, False otherwise.
+        An element cannot be added twice. If the user tries, False will be returned.
+        """
         # If no parent is provided then the user is calling "add"
-        #   so set node to self.root for initial run through.
+        # so set node to self.root for initial run through.
         if(parent == None):
             node = self.root
 
@@ -217,8 +238,8 @@ class AVLTree(BinarySearchTree):
         if(value < node['object']):
 
             # I am being very careful with my return statements in this function
-            #   because of this next time. I don't want 'child' set to True or
-            #   False.
+            # because of this next time. I don't want 'child' set to True or
+            # False.
             child = self.add(value, node['lchild'], node)
             if( child ):
                 node['lchild'] = child
@@ -234,8 +255,8 @@ class AVLTree(BinarySearchTree):
                         node = self.balance(node, 'rchild', parent)
 
                 # If there is no parent we need to return True because we
-                #   are at the top and we want the overall add function
-                #   to return True / False.
+                # are at the top and we want the overall add function
+                # to return True / False.
                 if( parent == None):
                     return True
                 return node
@@ -244,8 +265,8 @@ class AVLTree(BinarySearchTree):
         elif(value > node['object']):
 
             # I am being very careful with my return statements in this function
-            #   because of this next time. I don't want 'child' set to True or
-            #   False.
+            # because of this next time. I don't want 'child' set to True or
+            # False.
             child = self.add(value, node['rchild'], node)
             if ( child ):
                 node['rchild'] = child
@@ -261,8 +282,8 @@ class AVLTree(BinarySearchTree):
                         node = self.balance(node, 'rchild', parent)
 
                 # If there is no parent we need to return True because we are
-                #   at the top and we want the overall add function to
-                #   return True / False.
+                # at the top and we want the overall add function to
+                # return True / False.
                 if( parent == None):
                     return True
                 return node
@@ -274,6 +295,7 @@ class AVLTree(BinarySearchTree):
 
 
 def main():
+    """ Testing code. """
     print("Hello World!")
     start = time.time()
 
