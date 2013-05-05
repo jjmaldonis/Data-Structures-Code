@@ -20,3 +20,18 @@ Functions include:
     single_source_shortest_path(node)
         Returns a touple containing a list with the shortest distance to each other node as well as a dictionary containing each node as keys with the value of each key being the node from which the shortest path came from just before.
     
+
+#Hashtable
+##Functions and initialization
+Initialize a new hashtable using ... = Hashtable()
+Functions include:
+    get_size()
+        Returns the size of the hashtable.
+    get_load()
+        Returns the current load of the hashtable.
+    insert(element)
+        Inserts element into the table. Raises an exception if the element is already in there.
+    find(element)
+        Searches for element in the hashtable. If the element is found, the position of it is returned; if the element is not found, -1 is returned.
+    print_table()
+        Prints the hashtable for viewing purposes. Skips empty cells for clarity purposes.

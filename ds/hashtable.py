@@ -7,18 +7,27 @@ class Hashtable:
     def __init__(self):
         """ init function for my hash table. """
         self.pos = 0
-        #The size below is the power of 2 of the hashtable, not the actual size of the table
-        self.size = 3
+        # The size below is the power of 2 of the hashtable, not the actual size of the table
+        self.size = 2
         self.htable = [None] * (2**self.size)
         self.entries = 0.0
-        #Let the load factor to 0 initially
+        # Let the load factor to 0 initially
         self.lf = 0.0
         return None
+
+    def get_size(self):
+        """ returns the size of the table """
+        return 2**self.size
+
+    def get_load(self):
+        """ returns the current load of the table """
+        return self.lf
 
     def print_table(self):
         """ Prints the hash table for the user (mainly for debugging) """
         for i in range(0, 2**self.size):
-            print( '  ' + self.htable[i] )
+            if(self.htable[i]):
+                print( '  {0}: '.format(i) + self.htable[i] )
 
     def c_mul(self, a, b):
         """ This is how python creates some crazy but unique numbers based on other numbers """
@@ -35,13 +44,12 @@ class Hashtable:
 
     def rehash(self):
         """ Rehashing function """
-        print("Rehash table to size {}!".format(2**(self.size+1)))
         self.entries = 0.0
         self.pos = 0
         self.size = self.size + 1
-        #Point a temp pointer at the current hashtable
+        # Point a temp pointer at the current hashtable
         temphtable = self.htable
-        #Replace old table with the new bigger one
+        # Replace old table with the new bigger one
         self.htable = [None] * (2**self.size)
         for i in range(0, 2**(self.size-1)):
             if(temphtable[i] != None):
@@ -50,20 +58,24 @@ class Hashtable:
         self.lf = (self.entries) / (2**self.size)
         return None
 
-    #The following two functions are an implementation of python's hashing function (see increment_pos() for collisions)
+    # The following two functions are an implementation of python's hashing function (see increment_pos() for collisions)
     def reset_pos(self, element):
         """ Set position to the beginning of where it should be for a given input element """
         self.pos = self.pos_str_elem(element) & (2**self.size-1)
 
     def increment_pos(self, perturb):
         """ A collision occured to get the next position pos should be set to """
-        #Side note: '& (2**self.size-1)' is the same as '^ (2**self.size)'
+        # Side note: '& (2**self.size-1)' is the same as '^ (2**self.size)' but its much faster.
         self.pos = ((5*self.pos) + 1 + perturb) & (2**self.size-1)
         perturb = perturb >> self.PERTURB_SHIFT
         return perturb
 
     def insert(self, element):
-        """ Insert an element """
+        """ Insert an element 
+        Raises an exception if that element already exists
+        """
+        if self.find(element) is not -1:
+            raise Exception("{0} is already in the table.".format(element))
         self.reset_pos(element)
         perturb = self.pos_str_elem(element)
         #Navigate until we get to an open spot
@@ -84,29 +96,77 @@ class Hashtable:
         perturb = self.pos_str_elem(element)
         while(self.htable[self.pos] != None):
             if element == self.htable[self.pos]:
-                #Found it! Return where it's at.
+                # Found it! Return where it's at.
                 return self.pos
             else:
-                #Didn't find it, check the next spot we would have put it in
+                # Didn't find it, check the next spot we would have put it in
                 perturb = self.increment_pos(perturb)
         return -1
 
 
 def main():
     """ main """
-    htable = Hashtable()
-    htable.insert("jason")
-    htable.insert("don")
-    htable.insert("kyle")
-    htable.insert("chris")
-    htable.insert("jim")
 
-    htable.print_table()
+    print("Initializing hashtable...")
+    h = Hashtable()
 
-    pos = htable.find("don")
-    print("don found at {0}".format(pos))
-    pos = htable.find("kyle")
-    print("kyle found at {0}".format(pos))
+    print("Inserting 'a' twice and checking for an error...")
+    h.insert('a')
+    try:
+        h.insert('a')
+    except:
+        print("'a' is already in the table and an exception was raised appropriately.")
+    print("Printing table...")
+    h.print_table()
+    assert h.find('a') == 0
+
+    print("Inserting 'b' into the table...")
+    h.insert('b')
+    assert h.get_size() == 4
+
+    print("Printing table...")
+    h.print_table()
+
+    print("Inserting 'c' into the table... The hashtable should grow to size 8 from size 4...")
+    h.insert('c')
+
+    print("Checking the size...")
+    assert h.get_size() == 8
+
+    print("Inserting 'd' into the table...")
+    h.insert('d')
+    
+    print("Checking the load...")
+    assert h.get_load() == 0.5
+
+    
+    print("Searching for 'e', then adding it to the table, then searching for it again. It should be at position 4...")
+    assert h.find('e') == -1
+    h.insert('e')
+    assert h.find('e') != -1
+    assert h.find('e') == 4
+
+    print("Printing table...")
+    h.print_table()
+
+    moreToAdd = ['jason', 'kyle', 'dictionary', 'potato', 'orange']
+    
+    print("Inserting 5 more elements... The hashtable should immediately grow to size 16... Also, 'e' will have changed positions due to the rehash.")
+    for word in moreToAdd:
+        h.insert(word)
+
+    print("Printing table...")
+    h.print_table()
+    print("Checking the size and information about some words...")
+    assert h.get_size() == 16
+    assert h.find('jason') != -1
+    assert h.find('e') != -1
+    assert h.find('e') != 4
+    
+
+    print("All testing was sucessful.")
+
+
 
     return None
 
