@@ -35,3 +35,20 @@ Functions include:
         Searches for element in the hashtable. If the element is found, the position of it is returned; if the element is not found, -1 is returned.
     print_table()
         Prints the hashtable for viewing purposes. Skips empty cells for clarity purposes.
+
+
+#AVL Tree
+##Functions and initialization
+Initialize a new AVL tree using ... = AVLTree()
+Functions include:
+    add(item)
+        Adds an item into the tree. Returns True on success and False otherwise. Items that are already in the tree are not re-added.
+    __getitem__(item)
+        Returns True if the item is in the tree and False otherwise.
+    __unicode__(output=optional)
+        If no argument is passed it will print the tree to the terminal, returning an empty string.
+        If the argument output="string" is passed (note that output= is necessary to specify) then instead of printing the tree, it will be returned by the function in string format.
+    makeEmpty()
+        Removes all items from the tree, making an empty tree.
+    isEmpty()
+        Returns True if the tree is empty, False otherwise.
