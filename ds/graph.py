@@ -1,31 +1,15 @@
 import heapq
-import sys
 
 
 class Graph(object):
     """ undirected graph class """
 
-    def __init__(self, gmlfile=None):
+    def __init__(self):
         """ constructor 
-        @param gmlfile optional file argument to load into the graph.
+        No parameters, simple constructor
         """
-        if gmlfile is None:
-            raise Exception("No input graph file was given.")
-
         super(Graph, self).__init__()
-        infile = open(gmlfile,'r')
         self.graph = {}
-        for line in infile:
-            words = line.split()
-
-            # If there are an incorrect number of words / variables on this input line raise an exception.
-            if(len(words) != 2 and len(words) != 3):
-                raise Exception("Number of arguments per line in input file is not 2 or 3.")
-            if(len(words) == 3):
-                self.add_edge(words[0], words[1], eval(words[2]))
-            else:
-                self.add_edge(words[0], words[1])
-        return None
 
     def add_node(self, node):
         """ add a node with the given ID
@@ -33,7 +17,7 @@ class Graph(object):
         @param node label for the node being added
         @return None
         """
-        if node not in self.graph:
+        if node in self.graph:
             raise Exception("Node already exists.")
         self.graph[node] = {}
 
@@ -45,6 +29,8 @@ class Graph(object):
         @param weight weight of the edge
         @return 1 on success, 0 otherwise
         """
+        if type(weight) is not type(1) or type(weight) is not type(0.1):
+            raise Exception("Weight must be a number.")
         if( src not in self.graph.keys() ):
             self.add_node(src)
         if( dst not in self.graph.keys() ):
@@ -113,35 +99,74 @@ class Graph(object):
 
 
 def main():
-    graph = Graph(sys.argv[1])
 
-    if(len(sys.argv) == 2):
-        nodes = graph.nodes()
-    else:
-        nodes = sys.argv[2:]
+    print("Initializing graph...")
+    graph = Graph()
 
-    # Create a heap for the printout so we can print in shortest-path-first order.
-    printout = []
+    nodesToAdd = ["A","B","C","D","E","F","G"]
+    edges = {"A":[{"B":1}], "B":[{"C":2}], "C":[{"A":1},{"D":5}], "D":[{"E":2},{"F":3}]}
 
+    print("Testing if graph.nodes() is empty...")
+    assert graph.nodes() == []
+
+    print("Adding node 'A'...")
+    graph.add_node("A")
+    assert graph.nodes() == ["A"]
+
+    print("Adding adge A-B with weight 1...")
+    graph.add_edge("A","B",1)
+    assert graph.nodes() == ["A","B"]
+
+    print("Adding all nodes...")
     # For each node that the user wants us to calculate the shortest paths for, do it and print the results.
-    for aNode in nodes:
-        # Calculate shortest paths
-        dist, path = graph.single_source_shortest_path(aNode)
-        for node in dist:
-            # For each node connected to aNode compute the path to get there and put the results into the printout heap (in order using touples).
-            if(aNode != node):
-                thisPath = ''
-                temp = node
-                while(path[temp] != aNode):
-                    thisPath = path[temp] + ', ' + thisPath
-                    temp = path[temp]
-                thisPath = path[temp] + ', ' + thisPath + node
-                printline = "{0} -> {1} \t {2} \t {3}".format(aNode, node, dist[node], thisPath)
-                heapq.heappush( printout, (dist[node], len(printline), printline) )
-        # Print the heap and empty it.
-        while(printout):
-            print(heapq.heappop(printout)[2])
-        print
+    for aNode in nodesToAdd:
+        try:
+            graph.add_node(aNode)
+        except:
+            if(aNode is not "A" and aNode is not "B"):
+                raise Exception("Problem! Node {0} was incorrectly handled when added.".format(aNode))
+
+    assert sorted(graph.nodes()) == nodesToAdd
+
+    print("Adding all edges...")
+    for anEdge in edges.keys():
+        for edge2 in edges[anEdge]:
+            try:
+                graph.add_edge(anEdge,(edge2.keys())[0],edge2[edge2.keys()[0]])
+            except:
+                if(anEdge != "A" and edge2.keys()[0] != "B"):
+                    raise Exception("Problem! Edge {0}-{1} was incorreclty handled when added.".format(anEdge,edge2.keys()[0]))
+
+    print("Testing neighbors, degree, and edge_weight functions...")
+    assert graph.neighbors("D") == ["C","E","F"]
+    assert graph.degree("C") == 3
+    assert graph.edge_weight("C","D") == 5
+
+    print("Calculating and checking shortest paths...")
+    # Create a heap to store path information in
+    printout = []
+    # Calculate shortest paths from aNode to all other nodes
+    aNode = "A"
+    dist, path = graph.single_source_shortest_path(aNode)
+    for node in dist:
+        # For each node connected to aNode compute the path to get there and put the results into the printout heap (in order using touples).
+        if(aNode != node):
+            thisPath = ''
+            temp = node
+            while(path[temp] != aNode):
+                thisPath = path[temp] + ', ' + thisPath
+                temp = path[temp]
+            thisPath = path[temp] + ', ' + thisPath + node
+            printline = "{0} -> {1} \t {2} \t {3}".format(aNode, node, dist[node], thisPath)
+            heapq.heappush( printout, (dist[node], len(printline), printline) )
+
+    assert "A -> B \t 1 \t A, B" == heapq.heappop(printout)[2]
+    assert "A -> C \t 1 \t A, C" == heapq.heappop(printout)[2]
+    assert "A -> D \t 6 \t A, C, D" == heapq.heappop(printout)[2]
+    assert "A -> E \t 8 \t A, C, D, E" == heapq.heappop(printout)[2]
+    assert "A -> F \t 9 \t A, C, D, F" == heapq.heappop(printout)[2]
+
+    print("All tests succeeded.")
 
 
 
