@@ -103,14 +103,10 @@ class Hashtable:
         """
         self.reset_pos(element)
         perturb = self.pos_str_elem(element)
-        while(self.htable[self.pos] != None):
-            if element == self.htable[self.pos]:
-                # Found it! Return where it's at.
-                return self.pos
-            else:
-                # Didn't find it, check the next spot we would have put it in.
-                perturb = self.increment_pos(perturb)
-        return -1
+        while(self.htable[self.pos] != None and element != self.htable[self.pos]):
+            # Didn't find it, check the next spot we would have put it in.
+            perturb = self.increment_pos(perturb)
+        return self.pos
 
 
 def main():
