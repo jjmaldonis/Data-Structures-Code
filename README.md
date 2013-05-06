@@ -17,7 +17,7 @@ Array/Vector:
     Deletion in the middle is slow (at the beginning as well but you can get around this by having a designated starting point, you just then may have trouble growing the array).
 
 B-Tree:
-    Array implementation of a binary tree. This is very useful when you can't store the entire binary tree data structure in memory.
+    Array implementation of a binary tree. This is very useful when you can't store the entire binary tree data structure in memory. The nodes of a B-Tree are a list of the children of the current node (we visualize it something like this:   [->|10|->|20|->|30|->|] where -> represents a pointer to another node with all the numbers less than the following number in the list). Check out the book for more details, it really is necessary. DC thinks the B in B-Tree should stand for "block" because its like loading a block into memory; it isn't known what the B stands for actually.
 
 
 
