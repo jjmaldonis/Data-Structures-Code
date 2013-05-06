@@ -5,7 +5,7 @@
 ##Functions and initialization
 Initialize a new graph using ... = Graph()
 
-Functions include:
+Functions include:\n
 
     add_node(node)
 
